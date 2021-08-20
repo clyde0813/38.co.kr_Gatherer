@@ -24,14 +24,15 @@ excel_sheet.append(
 driver = webdriver.Chrome(os.getcwd() + "\\chromedriver.exe")
 wait = WebDriverWait(driver, 15)
 
-df = pd.read_excel(os.getcwd() + '\\1~31Data.xlsx', converters={'종목코드': str})
+df = pd.read_excel(os.getcwd() + '\\비상장 33135개 기업코드.xlsx', converters={'종목코드': str})
 df = df['종목코드'].astype(str).values.tolist()
 print(df)
-
+count = 0
 start = time.time()
 
 tmp_list = []
 for i in df:
+    count += 1
     tmp_list = []
     print('종목코드 : ' + str(i))
     driver.get('http://forum.38.co.kr/html/forum/board/?o=cinfo&code=' + i)
@@ -109,9 +110,10 @@ for i in df:
     tmp_list.append(agency)
     tmp_list.append(manager)
     tmp_list.append(ask)
+    print("33135 / ", str(count))
     print(tmp_list)
     excel_sheet.append(tmp_list)
-    excel.save(filename='기업개요.xlsx')
+    excel.save(filename='비상장 3만개 기업개요.xlsx')
 
 print("time : ", time.time() - start)
 # http://forum.38.co.kr/html/forum/board/?o=cinfo&code=366030

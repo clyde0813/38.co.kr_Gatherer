@@ -16,34 +16,41 @@ excel = Workbook()
 excel_sheet = excel.create_sheet('종목코드')
 excel_sheet = excel.active
 excel_sheet.append(
-    ["시장구분", "종목코드", "회사명", "업종"])
+    ["시장구분", "종목코드", "종목명", "업종"])
 
 driver = webdriver.Chrome(os.getcwd() + "\\chromedriver.exe")
 wait = WebDriverWait(driver, 15)
 
 df = pd.read_excel(os.getcwd() + '\\비상장 33135개 기업코드.xlsx', converters={'종목코드': str})
-df = df['종목코드'].astype(str).values.tolist()
+market = df['시장구분'].astype(str).values.tolist()
+code = df['종목코드'].astype(str).values.tolist()
+name = df['종목명'].astype(str).values.tolist()
+line = df['업종'].astype(str).values.tolist()
+data = zip(market, code, name, line)
 
 start = time.time()
 count = 0
 count1 = 0
 tmp_list = []
-for i in df:
+for a, b, c, d in data:
     count1 += 1
-    tmp_list = []
-    driver.get('http://test.38.co.kr/forum2/dart.php?code=' + i)
+    driver.get('http://test.38.co.kr/forum2/dart.php?code=' + str(b))
     try:
         driver.find_element_by_xpath('//*[@id="report"]/table[2]/tbody/tr[2]/td[2]').text
+        tmp_list = []
         count += 1
         print(count1, ' / ', count)
-        print('종목코드 : ' + str(i))
+        print('종목코드 : ' + str(b))
         print('Check')
+        tmp_list.append(a)
+        tmp_list.append(str(b))
+        tmp_list.append(c)
+        tmp_list.append(d)
+        print(tmp_list)
+        excel_sheet.append(tmp_list)
+        excel.save(filename='재무재표 보유 기업.xlsx')
     except:
         pass
-
-    # print(tmp_list)
-    # excel_sheet.append(tmp_list)
-    # excel.save(filename='기업개요.xlsx')
 
 print("time : ", time.time() - start)
 # http://forum.38.co.kr/html/forum/board/?o=cinfo&code=366030

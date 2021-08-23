@@ -25,11 +25,11 @@ wait = WebDriverWait(driver, 15)
 df = pd.read_excel(os.getcwd() + '\\비상장 33135개 기업코드.xlsx', converters={'종목코드': str})
 df = df['종목코드'].astype(str).values.tolist()
 print(df)
-count = 15991
+count = 30989
 start = time.time()
 
 tmp_list = []
-for i in df[15991:]:
+for i in df[30989:]:
     count += 1
     tmp_list = []
     print('\n종목코드 : ' + str(i))
@@ -116,7 +116,7 @@ for i in df[15991:]:
         print("33135 / ", str(count))
         print(tmp_list)
         excel_sheet.append(tmp_list)
-        excel.save(filename='15991~비상장 3만개 기업개요.xlsx')
+        excel.save(filename='30990 ~비상장 3만개 기업개요.xlsx')
 
 print("time : ", time.time() - start)
 # http://forum.38.co.kr/html/forum/board/?o=cinfo&code=366030
